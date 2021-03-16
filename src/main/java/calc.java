@@ -76,12 +76,15 @@ public class calc {
                         System.out.println("Answer : " + ans);
                         break;
                     case 2:
-                        BigInteger inp = factorial(value);
-                        if(inp.compareTo(BigInteger.valueOf(-1)) != 0) {
+
+                        if(value < 0) {
                             logger.error("Invalid number for factorial");
-                            return;
+                        } else {
+                            BigInteger inp = factorial(value);
+                            System.out.println("Answer : " + factorial(value));
                         }
-                        System.out.println("Answer : " + factorial(value));
+
+
                         break;
                     case 3:
                         double answer;
