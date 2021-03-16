@@ -1,19 +1,30 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.math.BigInteger;
 import java.util.*;
 import java.io.*;
 
 public class calc {
+
+    private static final Logger logger = LogManager.getLogger(calc.class);
+
     public static double squareRoot(int value) {
-        return Math.sqrt(value);
+        double answer;
+
+        try {
+            answer = Math.sqrt(value);
+        } catch (Exception e) {
+            logger.error("squareRoot error :: " + e);
+            return -1;
+        }
+
+        return answer;
     }
 
     public static BigInteger factorial(int value) {
+        if(value < 0) return BigInteger.valueOf(-1);
         if(value == 0) return BigInteger.valueOf(1);
         return BigInteger.valueOf(value).multiply(factorial(value-1));
-    }
-
-    public static double naturalLog(int value) {
-        return Math.log(value);
     }
 
     public static long powerFunc(int base, int power) {
@@ -34,24 +45,53 @@ public class calc {
             System.out.println("4. Power function");
             System.out.println("5. Exit");
 
-            int option = sc.nextInt();
+            int option;
+
+            try {
+                option = sc.nextInt();
+            } catch (InputMismatchException exp) {
+                logger.error("Invalid input at option :: " + exp);
+                return;
+            }
+
             int c;
 
             if(option == 5) {
                 cont = false;
             } else {
                 System.out.print("Input value : ");
-                int value = sc.nextInt();
+                int value;
+
+                try {
+                    value = sc.nextInt();
+                } catch (InputMismatchException exp){
+                    logger.error("Invalid input at value1 :: " + exp);
+                    return;
+                }
 
                 switch (option) {
                     case 1:
-                        System.out.println("Answer : " + squareRoot(value));
+                        double ans = squareRoot(value);
+                        if(ans == -1) return;
+                        System.out.println("Answer : " + ans);
                         break;
                     case 2:
+                        BigInteger inp = factorial(value);
+                        if(inp.compareTo(BigInteger.valueOf(-1)) != 0) {
+                            logger.error("Invalid number for factorial");
+                            return;
+                        }
                         System.out.println("Answer : " + factorial(value));
                         break;
                     case 3:
-                        System.out.println("Answer : " + naturalLog(value));
+                        double answer;
+                        try {
+                            answer = Math.log(value);
+                            System.out.println("Answer : " + answer);
+                        } catch(ArithmeticException e) {
+                            logger.error("Error for natural log :: " + e);
+                            System.out.println("Error for natural log :: " + e);
+                        }
                         break;
                     case 4:
                         System.out.print("Enter power : ");
