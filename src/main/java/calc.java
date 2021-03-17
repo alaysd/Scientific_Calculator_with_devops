@@ -32,7 +32,17 @@ public class calc {
     }
 
     public static double natLog(double value) {
-        return Math.log(value);
+        double ans;
+
+        try {
+            ans = Math.log(value);
+        } catch (ArithmeticException     e) {
+            ans = 0;
+            logger.error("Invalid natural log");
+            System.out.println("Natural log error :: "+ e);
+        }
+
+        return 0;
     }
 
     public static void main(String[] args) {
@@ -77,10 +87,15 @@ public class calc {
 
                 switch (option) {
                     case 1:
-                        double ans = squareRoot(value);
-                        if(ans == -1) return;
-                        System.out.println("Answer : " + ans);
-                        logger.info("Answer : " + ans);
+                        if(value < 0) {
+                            System.out.println("Negative number");
+                            logger.error("Cannot find roots of negative number ");
+                        } else {
+                            double ans = squareRoot(value);
+                            if(ans == -1) return;
+                            System.out.println("Answer : " + ans);
+                            logger.info("Answer : " + ans);
+                        }
                         break;
                     case 2:
 
@@ -96,21 +111,34 @@ public class calc {
                         break;
                     case 3:
                         double answer;
-                        try {
-                            answer = natLog(value);
-                            System.out.println("Answer : " + answer);
-                            logger.info("Answer : "+ answer);
-                        } catch(ArithmeticException e) {
-                            logger.error("Error for natural log :: " + e);
-                            System.out.println("Error for natural log :: " + e);
+                        if(value < 0) {
+                            System.out.println("NEGATIVE number in input");
+                            logger.error("negative input value for natural log");
+                        } else {
+                            try {
+                                answer = natLog(value);
+                                System.out.println("Answer : " + answer);
+                                logger.info("Answer : "+ answer);
+                            } catch(ArithmeticException e) {
+                                logger.error("Error for natural log :: " + e);
+                                System.out.println("Error for natural log :: " + e);
+                            }
                         }
+
                         break;
                     case 4:
                         System.out.print("Enter power : ");
                         int p = sc.nextInt();
-                        logger.info("Enter power : " + p);
-                        System.out.println("Answer : " + powerFunc(value, p));
-                        logger.info("Answer : " + powerFunc(value, p));
+
+                        if(p < 0) {
+                            logger.error("Negative powers not allowed\n");
+                            System.out.print("Negative power\n");
+                        } else {
+                            logger.info("Enter power : " + p);
+                            System.out.println("Answer : " + powerFunc(value, p));
+                            logger.info("Answer : " + powerFunc(value, p));
+                        }
+
                         break;
                     default:
                         System.out.println("Invalid option");
