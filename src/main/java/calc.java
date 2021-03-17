@@ -21,14 +21,18 @@ public class calc {
         return answer;
     }
 
-    public static BigInteger factorial(int value) {
-        if(value < 0) return BigInteger.valueOf(-1);
-        if(value == 0) return BigInteger.valueOf(1);
-        return BigInteger.valueOf(value).multiply(factorial(value-1));
+    public static long factorial(int value) {
+        if(value < 0) return -1;
+        if(value == 0) return 1;
+        return value * factorial(value-1);
     }
 
     public static long powerFunc(int base, int power) {
         return (long)Math.pow(base, power);
+    }
+
+    public static double natLog(double value) {
+        return Math.log(value);
     }
 
     public static void main(String[] args) {
@@ -36,6 +40,7 @@ public class calc {
         System.out.println("******************************************************************");
         System.out.println("Scientific calculator");
         System.out.println("******************************************************************");
+        logger.info("Calculator started");
         boolean cont = true;
 
         while(cont) {
@@ -64,6 +69,7 @@ public class calc {
 
                 try {
                     value = sc.nextInt();
+                    logger.info("Input value : " + value);
                 } catch (InputMismatchException exp){
                     logger.error("Invalid input at value1 :: " + exp);
                     return;
@@ -74,14 +80,16 @@ public class calc {
                         double ans = squareRoot(value);
                         if(ans == -1) return;
                         System.out.println("Answer : " + ans);
+                        logger.info("Answer : " + ans);
                         break;
                     case 2:
 
                         if(value < 0) {
                             logger.error("Invalid number for factorial");
                         } else {
-                            BigInteger inp = factorial(value);
-                            System.out.println("Answer : " + factorial(value));
+                            long inp = factorial(value);
+                            System.out.println("Answer : " + inp);
+                            logger.info("Answer : " + inp);
                         }
 
 
@@ -89,8 +97,9 @@ public class calc {
                     case 3:
                         double answer;
                         try {
-                            answer = Math.log(value);
+                            answer = natLog(value);
                             System.out.println("Answer : " + answer);
+                            logger.info("Answer : "+ answer);
                         } catch(ArithmeticException e) {
                             logger.error("Error for natural log :: " + e);
                             System.out.println("Error for natural log :: " + e);
@@ -99,10 +108,13 @@ public class calc {
                     case 4:
                         System.out.print("Enter power : ");
                         int p = sc.nextInt();
+                        logger.info("Enter power : " + p);
                         System.out.println("Answer : " + powerFunc(value, p));
+                        logger.info("Answer : " + powerFunc(value, p));
                         break;
                     default:
                         System.out.println("Invalid option");
+                        logger.info("Invalid option");
                 }
 
 
@@ -112,6 +124,7 @@ public class calc {
                 c = sc.nextInt();
                 System.out.println();
                 if(c == 2) {
+                    logger.info("Calculator closed");
                     System.out.println("Thank you!!\n");
                     cont = false;
                 }
